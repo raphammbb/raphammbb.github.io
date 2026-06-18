@@ -300,6 +300,64 @@
   }
 
   .back-link:hover { color: var(--text); }
+
+  /* ── Preview strip (blurred iframes) ─────────── */
+  .preview-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0 18px;
+    margin-bottom: 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .preview-strip::-webkit-scrollbar { display: none; }
+
+  .preview-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 160px;
+    height: 220px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--surface);
+  }
+
+  .preview-wrap iframe {
+    width: 800px;
+    height: 1100px;
+    transform: scale(0.2);
+    transform-origin: top left;
+    pointer-events: none;
+    filter: blur(3px);
+    border: none;
+    display: block;
+  }
+
+  .preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,15,0.4);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 14px;
+    gap: 5px;
+  }
+
+  .preview-lock { font-size: 16px; opacity: .65; }
+
+  .preview-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
 </style>
 </head>
 <body>
@@ -332,6 +390,26 @@
       Instagram
     </span>
     <h2>Auditoria de Instagram</h2>
+  </div>
+
+  <!-- Preview strip — Instagram -->
+  <div class="preview-strip">
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_navalhadeouro_sp.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_batistadepinheiros.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_diggofer.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_fernandobsmotors.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
   </div>
 
   <!-- Card 1 — @cafeteria_sp -->
@@ -419,6 +497,18 @@
     <h2>Auditoria de LinkedIn</h2>
   </div>
 
+  <!-- Preview strip — LinkedIn -->
+  <div class="preview-strip">
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_dr.oliviocesar.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_givisconti.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+  </div>
+
   <!-- Card — Ana Lima -->
   <div class="card">
     <div class="card-header">
@@ -464,6 +554,18 @@
       Site
     </span>
     <h2>Auditoria de Site</h2>
+  </div>
+
+  <!-- Preview strip — Site -->
+  <div class="preview-strip">
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/raio-x-paulocanutojr.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
+    <div class="preview-wrap">
+      <iframe src="https://raphammbb.github.io/auditorias/Instagram/auditoria_instagram_navalhadeouro_sp.html" scrolling="no" tabindex="-1" loading="lazy"></iframe>
+      <div class="preview-overlay"><span class="preview-lock">🔒</span><span class="preview-label">Auditoria real</span></div>
+    </div>
   </div>
 
   <!-- Card — cafeteria-sp.com.br -->
