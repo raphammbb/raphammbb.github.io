@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipos de Auditoria — Raphael Batista</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0f0f5;
+    --muted: #8a8a9e;
+    --ig: linear-gradient(135deg, #833ab4, #e1306c, #fcaf45);
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ─────────────────────────────────────── */
+  .hero {
+    position: relative;
+    height: 420px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 480px) { .hero { height: 360px; } }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+    filter: brightness(.75) grayscale(.2);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10,10,15,0.1) 0%,
+      rgba(10,10,15,0.3) 40%,
+      rgba(10,10,15,0.85) 75%,
+      #0a0a0f 100%
+    );
+  }
+
+  .hero-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 20px 36px;
+    text-align: center;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-size: clamp(24px, 6vw, 36px);
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  /* ── Container ────────────────────────────────── */
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+
+  /* ── Section header ───────────────────────────── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0 16px;
+  }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+  }
+
+  .tag-ig { background: rgba(225,48,108,0.15); color: #f472b6; border: 1px solid rgba(225,48,108,0.25); }
+  .tag-li { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.25); }
+  .tag-site { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+
+  .section-head h2 {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+
+  /* ── Card ─────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  /* Card header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .av-ig { background: var(--ig); }
+  .av-li { background: linear-gradient(135deg, #0077b5, #00a0dc); }
+  .av-site { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .av-ig2 { background: linear-gradient(135deg, #fcaf45, #e1306c); }
+
+  .card-profile { flex: 1; min-width: 0; }
+  .card-handle { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-type { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Card body with fade */
+  .card-body {
+    padding: 16px 20px 0;
+    position: relative;
+  }
+
+  .card-body-inner {
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 95%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 95%);
+  }
+
+  .diag-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .diag-item:last-child { border-bottom: none; }
+
+  .diag-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .diag-text { font-size: 13px; line-height: 1.5; color: rgba(240,240,245,0.85); }
+  .diag-text strong { color: var(--text); font-weight: 600; }
+
+  /* Card CTA */
+  .card-cta {
+    padding: 16px 20px 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: -.01em;
+    transition: transform .15s, opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-cta:active { transform: scale(.97); opacity: .9; }
+  .btn-cta-ig { background: linear-gradient(135deg, #833ab4, #e1306c); }
+  .btn-cta-li { background: linear-gradient(135deg, #0077b5, #00a0dc); }
+  .btn-cta-site { background: linear-gradient(135deg, #16a34a, #22c55e); }
+
+  /* ── Footer CTA ───────────────────────────────── */
+  .footer-cta {
+    margin-top: 48px;
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+  }
+
+  .footer-cta h3 {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    margin-bottom: 8px;
+  }
+
+  .footer-cta p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .btn-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #fff;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 28px;
+    border-radius: var(--radius-sm);
+    letter-spacing: -.01em;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.25);
+    transition: transform .15s, opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-wa:active { transform: scale(.97); opacity: .9; }
+
+  /* ── Back link ────────────────────────────────── */
+  .back-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 16px 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .back-link:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <img class="hero-img" src="../foto.jpg" alt="Raphael Batista">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-pill">✦ Exemplos fictícios</div>
+    <h1 class="hero-title">Veja como funciona<br>uma auditoria</h1>
+    <p class="hero-sub">Análise completa do seu perfil digital —<br>Instagram, LinkedIn ou Site</p>
+  </div>
+</div>
+
+<!-- Back -->
+<div class="back-bar">
+  <a class="back-link" href="../">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Voltar
+  </a>
+</div>
+
+<div class="container">
+
+  <!-- ── INSTAGRAM ─────────────────────────────── -->
+  <div class="section-head">
+    <span class="section-tag tag-ig">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      Instagram
+    </span>
+    <h2>Auditoria de Instagram</h2>
+  </div>
+
+  <!-- Card 1 — @cafeteria_sp -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-avatar av-ig">☕</div>
+      <div class="card-profile">
+        <div class="card-handle">@cafeteria_sp</div>
+        <div class="card-type">Cafeteria · São Paulo</div>
+      </div>
+      <span class="section-tag tag-ig" style="font-size:10px; padding:3px 10px;">Bio & Feed</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Bio vazia.</strong> O visitante chega ao perfil e não entende o que é o negócio, onde fica ou como contatar. Não há horário, endereço nem proposta.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Nenhum link externo.</strong> Sem Linktree, cardápio online ou WhatsApp. A conversão para cliente morre ali.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Destaques sem padrão.</strong> 6 destaques com capas de fotos aleatórias, sem nome estratégico. "2023", "2024", "misc" — invisíveis para quem quer saber cardápio ou localização.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Feed inconsistente.</strong> Mistura de repost, meme e foto de produto sem filtro padrão. Não transmite identidade visual do estabelecimento.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-cta">
+      <a class="btn-cta btn-cta-ig" href="https://wa.me/5511971007121?text=Oi%2C%20Raphael!%20Quero%20uma%20auditoria%20do%20meu%20Instagram.%20Podemos%20conversar%3F" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Quero uma auditoria assim
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 2 — @estudio_fit_rj -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-avatar av-ig2">💪</div>
+      <div class="card-profile">
+        <div class="card-handle">@estudio_fit_rj</div>
+        <div class="card-type">Studio de Personal Training · RJ</div>
+      </div>
+      <span class="section-tag tag-ig" style="font-size:10px; padding:3px 10px;">Bio & Destaques</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Bio genérica.</strong> "Personal trainer 💪 | RJ" não comunica diferencial. Por que esse studio e não outro? Qual resultado o cliente pode esperar?</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Sem CTA na bio.</strong> Não há instrução de ação — o visitante interessado não sabe se deve enviar DM, ligar, ir ao local ou clicar em algum link.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Zero prova social nos destaques.</strong> Nenhum destaque com depoimentos, transformações ou resultados de alunos. A confiança do lead fica em zero antes de entrar em contato.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Nome de exibição sem palavra-chave.</strong> "Ana Freitas" não aparece quando alguém pesquisa "personal trainer RJ" no Instagram. Uma mudança simples que triplica o alcance orgânico.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-cta">
+      <a class="btn-cta btn-cta-ig" href="https://wa.me/5511971007121?text=Oi%2C%20Raphael!%20Quero%20uma%20auditoria%20do%20meu%20Instagram.%20Podemos%20conversar%3F" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Quero uma auditoria assim
+      </a>
+    </div>
+  </div>
+
+  <!-- ── LINKEDIN ──────────────────────────────── -->
+  <div class="section-head">
+    <span class="section-tag tag-li">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </span>
+    <h2>Auditoria de LinkedIn</h2>
+  </div>
+
+  <!-- Card — Ana Lima -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-avatar av-li">AL</div>
+      <div class="card-profile">
+        <div class="card-handle">Ana Lima</div>
+        <div class="card-type">Gerente Comercial · São Paulo</div>
+      </div>
+      <span class="section-tag tag-li" style="font-size:10px; padding:3px 10px;">Perfil Pessoal</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Banner genérico padrão LinkedIn.</strong> A primeira impressão do perfil é a faixa azul padrão da plataforma. Não comunica área, empresa ou posicionamento — desperdiça o espaço mais visível.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Resumo vago.</strong> "Profissional com experiência em vendas e relacionamento com clientes." Sem números, sem contexto de setor, sem gancho. Um recrutador fecha o perfil em 5 segundos.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Sem palavras-chave estratégicas.</strong> O perfil não aparece em buscas por "gerente comercial B2B SP". Pequenos ajustes no título e nas descrições de cargo aumentam drasticamente a visibilidade.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Experiências sem resultado.</strong> Cargos listados com datas e empresa, mas sem uma conquista sequer — sem meta batida, projeto entregue ou número atingido.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-cta">
+      <a class="btn-cta btn-cta-li" href="https://wa.me/5511971007121?text=Oi%2C%20Raphael!%20Quero%20uma%20auditoria%20do%20meu%20LinkedIn.%20Podemos%20conversar%3F" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Quero uma auditoria assim
+      </a>
+    </div>
+  </div>
+
+  <!-- ── SITE ──────────────────────────────────── -->
+  <div class="section-head">
+    <span class="section-tag tag-site">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Site
+    </span>
+    <h2>Auditoria de Site</h2>
+  </div>
+
+  <!-- Card — cafeteria-sp.com.br -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-avatar av-site">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+      </div>
+      <div class="card-profile">
+        <div class="card-handle">cafeteria-sp.com.br</div>
+        <div class="card-type">Site institucional · Cafeteria</div>
+      </div>
+      <span class="section-tag tag-site" style="font-size:10px; padding:3px 10px;">UX & Copy</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>CTA principal confuso.</strong> O botão principal da homepage diz "Saiba mais" — mas saiba mais sobre o quê? O visitante não sabe o que vai acontecer se clicar. Taxa de clique despenca.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">❌</span>
+          <div class="diag-text"><strong>Zero prova social.</strong> Nenhum depoimento, avaliação do Google ou foto de cliente. Para um novo visitante, o site parece não ter clientela real.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Headline genérica.</strong> "Bem-vindo à nossa cafeteria" não vende nada. Uma headline orientada a benefício ("O melhor espresso da Vila Madalena") transforma visitante em cliente.</div>
+        </div>
+        <div class="diag-item">
+          <span class="diag-icon">⚠️</span>
+          <div class="diag-text"><strong>Mobile quebrado.</strong> Imagens cortadas, botões pequenos demais para toque. Mais de 70% dos acessos são mobile — cada elemento quebrado é um cliente que vai embora.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-cta">
+      <a class="btn-cta btn-cta-site" href="https://wa.me/5511971007121?text=Oi%2C%20Raphael!%20Quero%20uma%20auditoria%20do%20meu%20site.%20Podemos%20conversar%3F" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Quero uma auditoria assim
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Footer CTA ────────────────────────────── -->
+  <div class="footer-cta">
+    <h3>Quer uma auditoria do seu perfil?</h3>
+    <p>Analiso o que está freando seus resultados e entrego<br>um diagnóstico completo com o que mudar.</p>
+    <a class="btn-wa" href="https://wa.me/5511971007121?text=Oi%2C%20Raphael!%20Quero%20solicitar%20uma%20auditoria.%20Podemos%20conversar%3F" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.98-1.418A9.95 9.95 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.95 7.95 0 0 1-4.076-1.117l-.292-.173-3.027.862.856-2.968-.19-.304A7.949 7.949 0 0 1 4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/></svg>
+      Falar com Raphael
+    </a>
+  </div>
+
+</div>
+</body>
+</html>
